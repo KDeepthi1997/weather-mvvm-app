@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface WeatherAPIInterface {
     @GET("api/weather/all")
-    fun getData(): Call<List<WeatherUI>>
+    fun getData(): Call<List<WeatherDataModelItem>>
 }

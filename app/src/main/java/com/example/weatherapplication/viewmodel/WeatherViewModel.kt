@@ -47,12 +47,12 @@ class WeatherViewModel : ViewModel() {
     fun convertTemp(temp: Float, isFahrenheit:Boolean):Float =
         if(isFahrenheit) ((temp - 32) * 0.5556).toFloat() else  ((temp * 1.8) + 32).toFloat()
 
-    fun getWeatherData(onResult: (List<WeatherUI>?) -> Unit)  {
+    fun getWeatherData(onResult: (List<WeatherDataModelItem>?) -> Unit)  {
        val retrofit = ServiceLocator.getService<WeatherAPIInterface>()
-       retrofit.getData().enqueue(object : Callback<List<WeatherUI>> {
+       retrofit.getData().enqueue(object : Callback<List<WeatherDataModelItem>> {
            override fun onResponse(
-               call: Call<List<WeatherUI>>,
-               response: Response<List<WeatherUI>>
+               call: Call<List<WeatherDataModelItem>>,
+               response: Response<List<WeatherDataModelItem>>
            ) {
 
                val weatherItems = response.body()
@@ -61,7 +61,7 @@ class WeatherViewModel : ViewModel() {
 
            }
 
-           override fun onFailure(call: Call<List<WeatherUI>>, t: Throwable) {
+           override fun onFailure(call: Call<List<WeatherDataModelItem>>, t: Throwable) {
                onResult(null)
            }
 
@@ -72,7 +72,7 @@ class WeatherViewModel : ViewModel() {
        fun weatherData(){
             getWeatherData(){
                 if(it!= null) {
-                    weatherReportList.postValue(it)
+                    //weatherReportList.postValue(it)
 
                      val responseData = weatherData
 
