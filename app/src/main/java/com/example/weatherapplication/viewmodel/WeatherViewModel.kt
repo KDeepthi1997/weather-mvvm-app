@@ -7,6 +7,7 @@ import com.example.weatherapplication.model.WeatherDataModel
 import com.example.weatherapplication.service.RestAPIService
 import com.example.weatherapplication.model.WeatherDataModelItem
 import com.example.weatherapplication.service.ServiceLocator
+import com.example.weatherapplication.view.WeatherUI
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -16,35 +17,42 @@ import retrofit2.Response
 class WeatherViewModel : ViewModel() {
 
     //val weatherReportList = MutableLiveData<WeatherUI?>()
-    val weatherReportList = MutableLiveData<List<WeatherDataModelItem>?>()
-    var APP_CONTENT_TYPE:String = "text/plain"
+    //var weatherReportList = MutableLiveData<List<WeatherUI>?>()
+    val weatherReportList = MutableLiveData<List<WeatherUI>?>()
+    //val weatherReportUIList = MutableLiveData<List<WeatherUI>?>()
+
+
+
+    val weatherData = WeatherDataModel()
+
+    //var APP_CONTENT_TYPE:String = "text/plain"
 
     //val weatherData = WeatherAPI()
 
-    /*fun transformWeatherData(weatherData: Weather) :WeatherUI{
+    fun transformWeatherData(weatherData: WeatherDataModelItem) : WeatherUI {
 
-        val temperatureF = convertTemp(weatherData.temperature.toFloat(),false)
-        val humidityPercent = weatherData.humidity
-        val precipPercent = weatherData.precip
-        val windKmPerHr = weatherData.wind
-        val locationName = weatherData.location
-        val stateName = weatherData.state
-        val climateCondition = weatherData.climate
-
-        return WeatherUI("${temperatureF} F","${humidityPercent}%","${precipPercent}%",
-        "${windKmPerHr}Km/hr", locationName,stateName,climateCondition)
-    }*/
+        val hum =  weatherData.hum
+        val loc = weatherData.loc
+        val prec = weatherData.prec
+        val state = weatherData.state
+        val temp = convertTemp(weatherData.temp.toFloat(),false)
+        val wind = weatherData.wind
 
 
+        return WeatherUI("${hum} %",loc,"${prec}%",
+        "${state}","${temp} F","${wind}Km/hr")
+    }
 
-   /* fun convertTemp(temp: Float, isFahrenheit:Boolean):Float =
-        if(isFahrenheit) ((temp - 32) * 0.5556).toFloat() else  ((temp * 1.8) + 32).toFloat()*/
-   fun getWeatherData(onResult: (List<WeatherDataModelItem>?) -> Unit) {
+
+    fun convertTemp(temp: Float, isFahrenheit:Boolean):Float =
+        if(isFahrenheit) ((temp - 32) * 0.5556).toFloat() else  ((temp * 1.8) + 32).toFloat()
+
+    fun getWeatherData(onResult: (List<WeatherUI>?) -> Unit)  {
        val retrofit = ServiceLocator.getService<WeatherAPIInterface>()
-       retrofit.getData().enqueue(object : Callback<List<WeatherDataModelItem>> {
+       retrofit.getData().enqueue(object : Callback<List<WeatherUI>> {
            override fun onResponse(
-               call: Call<List<WeatherDataModelItem>>,
-               response: Response<List<WeatherDataModelItem>>
+               call: Call<List<WeatherUI>>,
+               response: Response<List<WeatherUI>>
            ) {
 
                val weatherItems = response.body()
@@ -53,7 +61,7 @@ class WeatherViewModel : ViewModel() {
 
            }
 
-           override fun onFailure(call: Call<List<WeatherDataModelItem>>, t: Throwable) {
+           override fun onFailure(call: Call<List<WeatherUI>>, t: Throwable) {
                onResult(null)
            }
 
@@ -61,16 +69,25 @@ class WeatherViewModel : ViewModel() {
    }
 
 
-       fun weatherData(json : JSONObject){
+       fun weatherData(){
             getWeatherData(){
-                if(it!= null){
+                if(it!= null) {
                     weatherReportList.postValue(it)
 
-                } else {
-               weatherReportList.postValue(null)
+                     val responseData = weatherData
+
+                    val weatherUI:List<WeatherUI> = responseData.map { weather: WeatherDataModelItem ->
+                        transformWeatherData(weather)
+
+                        //here you can transform your data to MoviesUI once returned here it will create List of MoviesUI
+                    }
                 }
             }
-        }
+
+                } /*else {
+               weatherReportList.postValue(null)
+                }*/
+
 
         /*val responseData = weatherData.getWeatherData()
 

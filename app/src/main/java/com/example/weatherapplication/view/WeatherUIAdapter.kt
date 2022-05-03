@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.example.weatherapplication.R
 import com.example.weatherapplication.model.WeatherDataModelItem
 
-class WeatherUIAdapter(private val weather:List<WeatherDataModelItem>):BaseAdapter() {
+class WeatherUIAdapter(private val weather:List<WeatherUI>):BaseAdapter() {
     override fun getCount(): Int {
         return weather.size
 
@@ -53,12 +53,12 @@ class WeatherUIAdapter(private val weather:List<WeatherDataModelItem>):BaseAdapt
         climate?.text = this.weather[position].climate
 
 */
-        hum?.text = this.weather[position].hum.toString()
+        hum?.text = this.weather[position].hum
         loc?.text =this.weather[position].loc
-        prec?.text = this.weather[position].prec.toString()
-        state?.text =this.weather[position].state.toString()
-        temp?.text =this.weather[position].temp.toString()
-        wind?.text =this.weather[position].wind.toString()
+        prec?.text = this.weather[position].prec
+        state?.text = this.weather[position].state
+        temp?.text = this.weather[position].temp
+        wind?.text = this.weather[position].wind
         return view
     }
 }

@@ -1,3 +1,4 @@
+
 package com.example.weatherapplication.view
 
 import androidx.lifecycle.ViewModelProvider
@@ -53,15 +54,15 @@ class WeatherFragment() : Fragment() {
 //        climateView = view.findViewById(R.id.climate)
 
 
-        val json = JSONObject()
+        /*val json = JSONObject()
         json.put("hum",80 )
         json.put("loc", "London")
         json.put("prec",1 )
         json.put("state","England")
         json.put("temp", 12)
-        json.put("wind", 20)
+        json.put("wind", 20)*/
 
-        viewModel?.weatherData(json)
+        viewModel?.weatherData()
 
 
 

@@ -1,13 +1,13 @@
 package com.example.weatherapplication.view
 
+
 data class WeatherUI(
-    var temperature: String,
-    var humidity: String,
-    var precip: String,
-    var wind: String,
-    var location : String,
-    var state : String,
-    var climate : String
+    val hum: String,
+    val loc: String,
+    val prec: String,
+    val state: String,
+    val temp: String,
+    val wind: String
 )
 
 /*{
