@@ -32,7 +32,7 @@ class WeatherUIAdapter(private val weather:List<WeatherUI>):BaseAdapter() {
         }
 
         val hum : TextView? = view?.findViewById(R.id.hum)
-        val loc : TextView? = view?.findViewById(R.id.loc)
+        //val loc : TextView? = view?.findViewById(R.id.loc)
         val prec : TextView? = view?.findViewById(R.id.prec)
         val name : TextView? = view?.findViewById(R.id.name)
         val climate : TextView? = view?.findViewById(R.id.climate)
@@ -55,7 +55,7 @@ class WeatherUIAdapter(private val weather:List<WeatherUI>):BaseAdapter() {
 
 */
         hum?.text = this.weather[position].hum
-        loc?.text =this.weather[position].loc
+        //loc?.text =this.weather[position].loc
         prec?.text = this.weather[position].prec
         name?.text = this.weather[position].name
         climate?.text = this.weather[position].climate

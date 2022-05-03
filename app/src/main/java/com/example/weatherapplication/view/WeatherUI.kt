@@ -3,7 +3,6 @@ package com.example.weatherapplication.view
 
 data class WeatherUI(
     val hum: String,
-    val loc: String,
     val prec: String,
     val name: String,
     val climate: String,

@@ -6,6 +6,7 @@ import com.example.weatherapplication.api.WeatherAPIInterface
 import com.example.weatherapplication.model.WeatherDataModel
 import com.example.weatherapplication.service.RestAPIService
 import com.example.weatherapplication.model.WeatherDataModelItem
+import com.example.weatherapplication.model.WeatherNewDataModelItem
 import com.example.weatherapplication.service.ServiceLocator
 import com.example.weatherapplication.view.WeatherUI
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -23,39 +24,37 @@ class WeatherViewModel : ViewModel() {
 
 
 
-    val weatherData = WeatherDataModel()
+    //val weatherData = WeatherDataModel()
 
     //var APP_CONTENT_TYPE:String = "text/plain"
 
     //val weatherData = WeatherAPI()
 
-    fun transformWeatherData(weatherData: WeatherDataModelItem) : WeatherUI {
+    fun transformWeatherData(weatherData: WeatherNewDataModelItem) : WeatherUI {
 
-        val hum =  weatherData.hum
-        val loc = weatherData.loc
-        val prec = weatherData.prec
-        val name = weatherData.state.name
-        val climate = weatherData.state.climate
-        val temp = convertTemp(weatherData.temp.toFloat(),false)
-        val wind = weatherData.wind
+        val hum =  weatherData.info.hum
+        val prec = weatherData.info.prec
+        val name = weatherData.name
+        val climate = weatherData.info.climate
+        val temp = convertTemp(weatherData.info.temp.toFloat(),false)
+        val wind = weatherData.info.wind
 
 
         //val we = WeatherUI(name=name, temp = )
 
-        return WeatherUI("${hum} %",loc,"${prec}%",
-        name,climate,"${temp} F","${wind}Km/hr")
+        return WeatherUI("${hum} %","${prec}%", name,climate,"${temp}F","${wind}Km/hr")
     }
 
 
     fun convertTemp(temp: Float, isFahrenheit:Boolean):Float =
         if(isFahrenheit) ((temp - 32) * 0.5556).toFloat() else  ((temp * 1.8) + 32).toFloat()
 
-    fun getWeatherData(onResult: (List<WeatherDataModelItem>?) -> Unit)  {
+    fun getWeatherData(onResult: (List<WeatherNewDataModelItem>?) -> Unit)  {
        val retrofit = ServiceLocator.getService<WeatherAPIInterface>()
-       retrofit.getData().enqueue(object : Callback<List<WeatherDataModelItem>> {
+       retrofit.getData().enqueue(object : Callback<List<WeatherNewDataModelItem>> {
            override fun onResponse(
-               call: Call<List<WeatherDataModelItem>>,
-               response: Response<List<WeatherDataModelItem>>
+               call: Call<List<WeatherNewDataModelItem>>,
+               response: Response<List<WeatherNewDataModelItem>>
            ) {
 
                val weatherItems = response.body()
@@ -64,7 +63,7 @@ class WeatherViewModel : ViewModel() {
 
            }
 
-           override fun onFailure(call: Call<List<WeatherDataModelItem>>, t: Throwable) {
+           override fun onFailure(call: Call<List<WeatherNewDataModelItem>>, t: Throwable) {
                onResult(null)
            }
 
@@ -83,7 +82,7 @@ class WeatherViewModel : ViewModel() {
 
 
 
-                    val weatherUI:List<WeatherUI> = responseData.map { weather: WeatherDataModelItem ->
+                    val weatherUI:List<WeatherUI> = responseData.map { weather: WeatherNewDataModelItem ->
                         transformWeatherData(weather)
 
 
