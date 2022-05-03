@@ -5,7 +5,8 @@ data class WeatherUI(
     val hum: String,
     val loc: String,
     val prec: String,
-    val state: String,
+    val name: String,
+    val climate: String,
     val temp: String,
     val wind: String
 )

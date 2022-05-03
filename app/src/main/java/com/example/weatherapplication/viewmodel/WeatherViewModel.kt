@@ -34,13 +34,16 @@ class WeatherViewModel : ViewModel() {
         val hum =  weatherData.hum
         val loc = weatherData.loc
         val prec = weatherData.prec
-        val state = weatherData.state
+        val name = weatherData.state.name
+        val climate = weatherData.state.climate
         val temp = convertTemp(weatherData.temp.toFloat(),false)
         val wind = weatherData.wind
 
 
+        //val we = WeatherUI(name=name, temp = )
+
         return WeatherUI("${hum} %",loc,"${prec}%",
-        "${state}","${temp} F","${wind}Km/hr")
+        name,climate,"${temp} F","${wind}Km/hr")
     }
 
 
@@ -70,18 +73,25 @@ class WeatherViewModel : ViewModel() {
 
 
        fun weatherData(){
-            getWeatherData(){
-                if(it!= null) {
-                    //weatherReportList.postValue(it)
+            getWeatherData(){ responseData->
+                if(responseData!= null) {
 
-                     val responseData = weatherData
+                        // here you are assigning weatherData which is an empty model to the reponseData
+                            // and then you are using this lower to map it
+                    // val responseData = weatherData
+                        // you can do this instead
+
+
 
                     val weatherUI:List<WeatherUI> = responseData.map { weather: WeatherDataModelItem ->
                         transformWeatherData(weather)
 
+
                         //here you can transform your data to MoviesUI once returned here it will create List of MoviesUI
                     }
+                    weatherReportList.postValue(weatherUI)
                 }
+
             }
 
                 } /*else {
